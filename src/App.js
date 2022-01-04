@@ -18,6 +18,6 @@ const items = [
 ]
 
 
-const App = () => <div className="app-container"><Home items={items} /></div>;
+const App = () => <div className="app-container"><Home items={items} /></div>
 
 export default App;

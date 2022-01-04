@@ -1,5 +1,7 @@
 import {Component} from 'react';
 
+import Button from '@mui/material/Button';
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,8 +10,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import Row from '../Row'
+
 
 class Home extends Component{
     state = {rows:[]}
@@ -18,7 +20,22 @@ class Home extends Component{
         this.setState({rows:this.props.items})
     }
 
+    addRow = () =>{
+        const {rows} = this.state
+        const newItem = {
+        item_id: rows.length+1,
+        item_name: "",
+        item_description: "",
+        item_price: 0
+        }
+        this.setState({rows:[...rows,newItem]})
+    }
     
+    deleteRow = (id) => {
+        const {rows} = this.state
+        const newRows = rows.filter((row)=>(row.id!==id))
+        this.setState({rows:newRows})
+    }
 
     render(){
         const {rows} = this.state
@@ -32,27 +49,12 @@ class Home extends Component{
                             {columnsList.map((column)=>(<TableCell key={column} align="center">{column}</TableCell>))}
                         </TableRow>
                         </TableHead>
-                        <TableBody>
-                    {rows.map((row) => (
-                    <TableRow
-                    key={row.item_id}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                    >
-                <TableCell component="th" scope="row" align="center">
-                    {row.item_id}</TableCell>
-                <TableCell align="center">{row.item_name}</TableCell>
-                <TableCell align="center">{row.item_description}</TableCell>
-                <TableCell align="center">{row.item_price}</TableCell>
-                <TableCell align="center">
-                <EditIcon fontSize="small" sx={{marginRight:2}}/>
-                <DeleteIcon fontSize="small"/> 
-                </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
+                    <TableBody>
+                    {rows.map((row) => (<Row row={row} key={row.item_id}/>))}
+                    </TableBody>
                     </Table>
                 </TableContainer>
-                
+                <Button variant="outlined" onClick={this.addRow} sx={{marginTop:2}}>Add Row</Button>
             </div>
     </>)
     }
