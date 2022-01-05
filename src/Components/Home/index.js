@@ -46,11 +46,21 @@ class Home extends Component{
     }
     
     deleteRowFromList = (id) => {
-        console.log(id)
         const {rows} = this.state
         const newRows = rows.filter((row)=>(row.item_id!==id))
-        console.log(newRows)
         this.setState({rows:newRows})
+    }
+
+    saveChangesToList = (item,id) =>{
+        const {rows} = this.state
+        console.log("changes called homes")
+        const updatedRows = rows.map((row)=>{
+            if(row.item_id===id){
+                return{...row,...item}
+            }return row
+        })
+        console.log(updatedRows)
+        this.setState({rows:updatedRows})
     }
 
     render(){
@@ -66,7 +76,7 @@ class Home extends Component{
                         </TableRow>
                         </TableHead>
                     <TableBody>
-                    {rows.map((row) => (<Row row={row} key={row.item_id} deleteRow={this.deleteRowFromList}/>))}
+                    {rows.map((row) => (<Row row={row} key={row.item_id} deleteRow={this.deleteRowFromList} saveChangesToList = {this.saveChangesToList}/>))}
                     </TableBody>
                     </Table>
                 </TableContainer>
